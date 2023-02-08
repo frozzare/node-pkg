@@ -11,14 +11,15 @@ export const build = async (entryPoint, config = {}) => {
   });
 
   const file = out.outputFiles[0];
-  const name = file.text
-    .match(/\__toCommonJS\((\w+)\)/)?.[1]
-    ?.replace('_exports', '_default');
+  let text = file.text;
 
-  const body =
-    config?.format === 'cjs'
-      ? file.text.replace(/\__toCommonJS\(\w+\)/, name)
-      : file.text;
+  if (config?.format === 'cjs') {
+    const reg = /module.exports = \__toCommonJS\((\w+)\);/;
+    const match = text.match(reg);
+    const name = match[1].replace('_exports', '_default');
 
-  return !config.write ? body : fs.writeFileSync(file.path, body);
+    text = text.replace(match[0], '') + `\nmodule.exports = ${name}`;
+  }
+
+  return !config.write ? text : fs.writeFileSync(file.path, text);
 };
