@@ -11,14 +11,22 @@ const defaultOptions = {
 export const build = async (entryPoint: string, options: BuildOptions = {}) => {
   const config = { ...defaultOptions, ...options };
 
-  const out = await esbuild({
+  const result = await esbuild({
     ...config,
     entryPoints: [entryPoint],
     bundle: true,
     write: false,
   });
 
-  const file = out.outputFiles[0];
+  if (result.errors.length) {
+    throw result.errors;
+  }
+
+  if (result.warnings.length) {
+    result.warnings.forEach(console.warn);
+  }
+
+  const file = result.outputFiles[0];
   let text = file.text;
 
   if (config.format === 'cjs') {
