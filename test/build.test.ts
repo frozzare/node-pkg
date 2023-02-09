@@ -19,7 +19,7 @@ describe('build', () => {
     expect(output).toContain('module.exports = class_default');
   });
 
-  it('should work with entryPoint as property', async () => {
+  it('should work with entry as property', async () => {
     const output = await build({
       entry: `${__dirname}/fixtures/class.ts`,
       write: false,
