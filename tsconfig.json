@@ -9,6 +9,7 @@
     "rootDirs": ["src"],
     "noEmit": false,
     "strict": true,
+    "module": "CommonJS",
     "moduleResolution": "node",
     "types": ["node"],
     "allowSyntheticDefaultImports": true,

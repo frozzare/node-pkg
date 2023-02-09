@@ -4,7 +4,13 @@ import { build as esbuild, BuildOptions as ESBuildOptions } from 'esbuild';
 
 export type BuildOptions = Omit<ESBuildOptions, 'bundle' | 'entryPoints'>;
 
-export const build = async (entryPoint: string, config: BuildOptions = {}) => {
+const defaultOptions = {
+  write: true,
+};
+
+export const build = async (entryPoint: string, options: BuildOptions = {}) => {
+  const config = { ...defaultOptions, ...options };
+
   const out = await esbuild({
     ...config,
     entryPoints: [entryPoint],
@@ -24,7 +30,7 @@ export const build = async (entryPoint: string, config: BuildOptions = {}) => {
     }
 
     const name = match?.[1].replace('_exports', '_default');
-    text = text.replace(match?.[0] || '', '') + `\nmodule.exports = ${name}`;
+    text = text.replace(match?.[0] || '', '') + `\nmodule.exports = ${name};`;
   }
 
   if (!config.write) {
