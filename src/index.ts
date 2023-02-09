@@ -42,7 +42,7 @@ export const build = async (
 
   if (config.format === 'cjs') {
     const match = text.match(
-      /.*default\:(?:\s+|)\(\)(?:\s+|)=>(?:\s+|)([A-Za-z0-9_]+)/
+      /.*default:(?:\s+|)\(\)(?:\s+|)=>(?:\s+|)([A-Za-z0-9_]+)/
     );
 
     if (!match) {
