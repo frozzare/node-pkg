@@ -1,10 +1,10 @@
 import fs from 'fs';
-import { build as esbuild, BuildOptions } from 'esbuild';
+import path from 'path';
+import { build as esbuild, BuildOptions as ESBuildOptions } from 'esbuild';
 
-export const build = async (
-  entryPoint: string,
-  config: Omit<BuildOptions, 'bundle' | 'entryPoints'> = {}
-) => {
+export type BuildOptions = Omit<ESBuildOptions, 'bundle' | 'entryPoints'>;
+
+export const build = async (entryPoint: string, config: BuildOptions = {}) => {
   const out = await esbuild({
     ...config,
     entryPoints: [entryPoint],
@@ -16,12 +16,22 @@ export const build = async (
   let text = file.text;
 
   if (config.format === 'cjs') {
-    const reg = /module.exports = \__toCommonJS\((\w+)\);/;
+    const reg = /module.exports = __toCommonJS\((\w+)\);/;
     const match = text.match(reg);
-    const name = match[1].replace('_exports', '_default');
 
-    text = text.replace(match[0], '') + `\nmodule.exports = ${name}`;
+    if (!match) {
+      throw new Error('Failed to find export name');
+    }
+
+    const name = match?.[1].replace('_exports', '_default');
+    text = text.replace(match?.[0] || '', '') + `\nmodule.exports = ${name}`;
   }
+
+  if (!config.write) {
+    return text;
+  }
+
+  fs.mkdirSync(path.dirname(file.path));
 
   return !config.write ? text : fs.writeFileSync(file.path, text);
 };

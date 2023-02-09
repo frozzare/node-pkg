@@ -2,17 +2,30 @@
   "name": "@frozzare/pkg",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "format": "prettier --write 'src/**/*.ts' 'test/**/*.ts'",
+    "lint": "eslint src --ext .ts",
+    "prepublishOnly": "npm run build",
+    "test": "jest"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
+  "license": "MIT",
   "dependencies": {
-    "esbuild": "^0.17.6"
+    "esbuild": "^0.17.0"
   },
   "devDependencies": {
-    "tsx": "^3.12.3"
+    "@types/jest": "^29.4.0",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
+    "esbuild-jest": "^0.5.0",
+    "eslint": "^8.33.0",
+    "jest": "^29.4.2",
+    "prettier": "^2.8.4",
+    "rimraf": "^4.1.2",
+    "tsx": "^3.12.3",
+    "typescript": "^4.9.5"
   }
 }
