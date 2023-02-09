@@ -20,9 +20,7 @@ export const build = async (
 
   const result = await esbuild({
     ...config,
-    entryPoints: [
-      typeof entry === 'object' && entry.entry ? entry.entry : entry,
-    ],
+    entryPoints: [typeof entry === 'string' ? entry : entry.entry],
     bundle: true,
     write: false,
   });
@@ -33,6 +31,10 @@ export const build = async (
 
   if (result.warnings.length) {
     result.warnings.forEach(console.warn);
+  }
+
+  if (!result.outputFiles?.length) {
+    throw new Error('No outfile defined');
   }
 
   const file = result.outputFiles[0];

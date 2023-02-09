@@ -44,7 +44,7 @@ exports[`build should build esm 1`] = `
 "
 `;
 
-exports[`build should work with entryPoint as property 1`] = `
+exports[`build should work with entry as property 1`] = `
 ""use strict";
 (() => {
   // test/fixtures/class.ts
