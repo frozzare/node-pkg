@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { build as esbuild, BuildOptions as ESBuildOptions } from 'esbuild';
+import { omit } from './utils';
 
 export type BuildOptions = Omit<ESBuildOptions, 'bundle' | 'entryPoints'>;
 
@@ -8,12 +9,22 @@ const defaultOptions = {
   write: true,
 };
 
-export const build = async (entryPoint: string, options: BuildOptions = {}) => {
-  const config = { ...defaultOptions, ...options };
+export const build = async (
+  entryPoint: string | (BuildOptions & { entryPoint: string }),
+  options: BuildOptions = {}
+) => {
+  const config = omit(['entryPoint'], {
+    ...defaultOptions,
+    ...(typeof entryPoint === 'object' ? entryPoint : options),
+  });
 
   const result = await esbuild({
     ...config,
-    entryPoints: [entryPoint],
+    entryPoints: [
+      typeof entryPoint === 'object' && entryPoint.entryPoint
+        ? entryPoint.entryPoint
+        : entryPoint,
+    ],
     bundle: true,
     write: false,
   });

@@ -18,4 +18,13 @@ describe('build', () => {
     expect(output).toMatchSnapshot();
     expect(output).toContain('module.exports = class_default');
   });
+
+  it('should work with entryPoint as property', async () => {
+    const output = await build({
+      entryPoint: `${__dirname}/fixtures/class.ts`,
+      write: false,
+    });
+
+    expect(output).toMatchSnapshot();
+  });
 });
