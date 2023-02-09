@@ -41,15 +41,18 @@ export const build = async (
   let text = file.text;
 
   if (config.format === 'cjs') {
-    const reg = /module.exports = __toCommonJS\((\w+)\);/;
-    const match = text.match(reg);
+    const match = text.match(
+      /.*default\:(?:\s+|)\(\)(?:\s+|)=>(?:\s+|)([A-Za-z0-9_]+)/
+    );
 
     if (!match) {
       throw new Error('Failed to find export name');
     }
 
-    const name = match?.[1].replace('_exports', '_default');
-    text = text.replace(match?.[0] || '', '') + `\nmodule.exports = ${name};`;
+    const name = match?.[1].trim();
+    text =
+      text.replace(/module.exports = __toCommonJS\(\w+\);/, '') +
+      `module.exports = ${name};`.replace(config?.minify ? /\s/g : '', '');
   }
 
   if (!config.write) {

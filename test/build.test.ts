@@ -27,4 +27,15 @@ describe('build', () => {
 
     expect(output).toMatchSnapshot();
   });
+
+  it('should build cjs with minify', async () => {
+    const output = await build(`${__dirname}/fixtures/class.ts`, {
+      write: false,
+      minify: true,
+      format: 'cjs',
+    });
+
+    expect(output).toMatchSnapshot();
+    expect(output).toContain('module.exports=b;');
+  });
 });
