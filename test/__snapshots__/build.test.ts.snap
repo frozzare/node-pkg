@@ -30,7 +30,7 @@ var Test = class {
 };
 var class_default = Test;
 
-module.exports = class_default"
+module.exports = class_default;"
 `;
 
 exports[`build should build esm 1`] = `
