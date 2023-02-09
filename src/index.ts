@@ -10,20 +10,18 @@ const defaultOptions = {
 };
 
 export const build = async (
-  entryPoint: string | (BuildOptions & { entryPoint: string }),
+  entry: string | (BuildOptions & { entry: string }),
   options: BuildOptions = {}
 ) => {
-  const config = omit(['entryPoint'], {
+  const config = omit(['entry'], {
     ...defaultOptions,
-    ...(typeof entryPoint === 'object' ? entryPoint : options),
+    ...(typeof entry === 'object' ? entry : options),
   });
 
   const result = await esbuild({
     ...config,
     entryPoints: [
-      typeof entryPoint === 'object' && entryPoint.entryPoint
-        ? entryPoint.entryPoint
-        : entryPoint,
+      typeof entry === 'object' && entry.entry ? entry.entry : entry,
     ],
     bundle: true,
     write: false,

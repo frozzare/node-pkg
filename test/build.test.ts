@@ -21,7 +21,7 @@ describe('build', () => {
 
   it('should work with entryPoint as property', async () => {
     const output = await build({
-      entryPoint: `${__dirname}/fixtures/class.ts`,
+      entry: `${__dirname}/fixtures/class.ts`,
       write: false,
     });
 
