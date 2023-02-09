@@ -1,6 +1,6 @@
 {
   "name": "@frozzare/pkg",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -14,6 +14,8 @@
     "dist"
   ],
   "keywords": [],
+  "homepage": "https://github.com/frozzare/node-pkg",
+  "repository": "https://github.com/frozzare/node-pkg",
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
   "license": "MIT",
   "dependencies": {
