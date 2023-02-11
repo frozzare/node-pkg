@@ -51,8 +51,11 @@ export const build = async (
 
     const name = match?.[1].trim();
     text =
-      text.replace(/module.exports(?:\s+|)=(?:\s+|)\w+\(\w+\);/, '') +
-      `module.exports = ${name};`.replace(config?.minify ? /\s/g : '', '');
+      text.replace(/module.exports(?:\s+|)=(?:\s+|)\w+\(\w+\);/, '').trim() +
+      `${config?.minify ? '' : '\n'}module.exports = ${name};`.replace(
+        config?.minify ? /\s/g : '',
+        ''
+      );
   }
 
   if (!config.write) {
