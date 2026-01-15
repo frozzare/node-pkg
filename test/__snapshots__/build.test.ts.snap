@@ -1,7 +1,7 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`build > should build cjs 1`] = `
-"\\"use strict\\";
+""use strict";
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
@@ -11,14 +11,14 @@ var __export = (target, all) => {
     __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === \\"object\\" || typeof from === \\"function\\") {
+  if (from && typeof from === "object" || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
       if (!__hasOwnProp.call(to, key) && key !== except)
         __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
   }
   return to;
 };
-var __toCommonJS = (mod) => __copyProps(__defProp({}, \\"__esModule\\", { value: true }), mod);
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // test/fixtures/class.ts
 var class_exports = {};
@@ -32,10 +32,10 @@ var class_default = Test;
 module.exports = class_default;"
 `;
 
-exports[`build > should build cjs with minify 1`] = `"\\"use strict\\";var e=Object.defineProperty;var p=Object.getOwnPropertyDescriptor;var r=Object.getOwnPropertyNames;var s=Object.prototype.hasOwnProperty;var t=(l,a)=>{for(var d in a)e(l,d,{get:a[d],enumerable:!0})},u=(l,a,d,o)=>{if(a&&typeof a==\\"object\\"||typeof a==\\"function\\")for(let c of r(a))!s.call(l,c)&&c!==d&&e(l,c,{get:()=>a[c],enumerable:!(o=p(a,c))||o.enumerable});return l};var x=l=>u(e({},\\"__esModule\\",{value:!0}),l);var g={};t(g,{default:()=>b});var f=class{},b=f;module.exports=b;"`;
+exports[`build > should build cjs with minify 1`] = `""use strict";var e=Object.defineProperty;var p=Object.getOwnPropertyDescriptor;var r=Object.getOwnPropertyNames;var s=Object.prototype.hasOwnProperty;var t=(l,a)=>{for(var d in a)e(l,d,{get:a[d],enumerable:!0})},u=(l,a,d,o)=>{if(a&&typeof a=="object"||typeof a=="function")for(let c of r(a))!s.call(l,c)&&c!==d&&e(l,c,{get:()=>a[c],enumerable:!(o=p(a,c))||o.enumerable});return l};var x=l=>u(e({},"__esModule",{value:!0}),l);var g={};t(g,{default:()=>b});var f=class{},b=f;module.exports=b;"`;
 
 exports[`build > should build esm 1`] = `
-"\\"use strict\\";
+""use strict";
 (() => {
   // test/fixtures/class.ts
   var Test = class {
@@ -46,7 +46,7 @@ exports[`build > should build esm 1`] = `
 `;
 
 exports[`build > should work with entry as property 1`] = `
-"\\"use strict\\";
+""use strict";
 (() => {
   // test/fixtures/class.ts
   var Test = class {

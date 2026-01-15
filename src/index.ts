@@ -1,26 +1,30 @@
-import fs from 'fs';
-import path from 'path';
-import { build as esbuild, BuildOptions as ESBuildOptions } from 'esbuild';
-import { omit } from './utils';
+import fs from "node:fs";
+import path from "node:path";
+import { type BuildOptions as ESBuildOptions, build as esbuild } from "esbuild";
+import { omit } from "./utils";
 
-export type BuildOptions = Omit<ESBuildOptions, 'bundle' | 'entryPoints'>;
+export type BuildOptions = Omit<ESBuildOptions, "bundle" | "entryPoints">;
 
 const defaultOptions = {
   write: true,
 };
 
+const DEFAULT_EXPORT_REGEX =
+  /.*default:(?:\s+|)\(\)(?:\s+|)=>(?:\s+|)([A-Za-z0-9_]+)/;
+const MODULE_EXPORTS_REGEX = /module.exports(?:\s+|)=(?:\s+|)\w+\(\w+\);/;
+
 export const build = async (
   entry: string | (BuildOptions & { entry: string }),
   options: BuildOptions = {}
 ) => {
-  const config = omit(['entry'], {
+  const config = omit(["entry"], {
     ...defaultOptions,
-    ...(typeof entry === 'object' ? entry : options),
+    ...(typeof entry === "object" ? entry : options),
   });
 
   const result = await esbuild({
     ...config,
-    entryPoints: [typeof entry === 'string' ? entry : entry.entry],
+    entryPoints: [typeof entry === "string" ? entry : entry.entry],
     bundle: true,
     write: false,
   });
@@ -34,27 +38,25 @@ export const build = async (
   }
 
   if (!result.outputFiles?.length) {
-    throw new Error('No outfile defined');
+    throw new Error("No outfile defined");
   }
 
   const file = result.outputFiles[0];
   let text = file.text;
 
-  if (config.format === 'cjs') {
-    const match = text.match(
-      /.*default:(?:\s+|)\(\)(?:\s+|)=>(?:\s+|)([A-Za-z0-9_]+)/
-    );
+  if (config.format === "cjs") {
+    const match = text.match(DEFAULT_EXPORT_REGEX);
 
     if (!match) {
-      throw new Error('Failed to find export name');
+      throw new Error("Failed to find export name");
     }
 
     const name = match?.[1].trim();
     text =
-      text.replace(/module.exports(?:\s+|)=(?:\s+|)\w+\(\w+\);/, '').trim() +
-      `${config?.minify ? '' : '\n'}module.exports = ${name};`.replace(
-        config?.minify ? /\s/g : '',
-        ''
+      text.replace(MODULE_EXPORTS_REGEX, "").trim() +
+      `${config?.minify ? "" : "\n"}module.exports = ${name};`.replace(
+        config?.minify ? /\s/g : "",
+        ""
       );
   }
 
@@ -64,5 +66,5 @@ export const build = async (
 
   fs.mkdirSync(path.dirname(file.path));
 
-  return !config.write ? text : fs.writeFileSync(file.path, text);
+  return config.write ? fs.writeFileSync(file.path, text) : text;
 };
